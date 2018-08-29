@@ -1,5 +1,4 @@
 # Apitax
-<<<<<<< HEAD
 
 Pronounced: *ahhp-ehh-tax*
 
@@ -638,4 +637,4 @@ Okay, now our frontend only has 1 short line of commandtax which is executing a 
 
 =======
 Brings together Commandtax, Scriptax, Standard Library, and the API to create a powerful automation framework. Please use StarterPack to quickly incorporate additional drivers, configuration, and custom code into Apitax.
->>>>>>> 198f38ea41e6482894748729004fc11de10b383a
+
