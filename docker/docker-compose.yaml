@@ -1,0 +1,12 @@
+version: '3'
+services:
+  apitax:
+    image: apitax:latest
+    restart: unless-stopped
+    ports:
+      - 5085:80
+    volumes:
+      - ${PWD}/project.py:/app/project.py
+      - ${PWD}/config.txt:/app/config.txt
+      - ${PWD}/logs:/app/logs
+      - ${PWD}/app:/app/app

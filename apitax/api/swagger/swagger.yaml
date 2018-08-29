@@ -1,0 +1,756 @@
+---
+swagger: "2.0"
+info:
+  description: "The API for the frontend of Apitax"
+  version: "2"
+  title: "Apitax"
+  contact:
+    email: "shawn.clake@nopatience.net"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+basePath: "/apitax/2"
+tags:
+- name: "admins"
+  description: "Secured Admin-only calls"
+- name: "developers"
+  description: "Operations available to regular developers"
+- name: "users"
+  description: "Operations available to any logged in users"
+- name: "any"
+  description: "Operations available to client regardless of being logged in or not"
+schemes:
+- "https"
+paths:
+  /login:
+    get:
+      tags:
+      - "any"
+      summary: "Displays the login page"
+      description: "Displays the login page"
+      operationId: "display_login"
+      produces:
+      - "text/html"
+      parameters: []
+      responses:
+        200:
+          description: "Successfully loaded html page."
+          examples:
+            text/html: "<html><head><title>Apitax Login</title></head><body></body></html>"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      x-swagger-router-controller: "apitax.ah.api.controllers.any_controller"
+  /token/refresh:
+    post:
+      tags:
+      - "any"
+      summary: "Refreshes login token using refresh token"
+      description: "Refreshes login token using refresh token"
+      operationId: "refresh_token"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "Authentication successful"
+          schema:
+            $ref: "#/definitions/UserAuth"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "apitax.ah.api.controllers.any_controller"
+  /dashboard:
+    get:
+      tags:
+      - "users"
+      summary: "Displays the user dashboard page"
+      description: "Displays the user dashboard page"
+      operationId: "display_dashboard"
+      produces:
+      - "text/html"
+      parameters: []
+      responses:
+        200:
+          description: "Successfully loaded html page."
+          examples:
+            text/html: "<html><head><title>Apitax Dashboard</title></head><body></body></html>"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "apitax.ah.api.controllers.users_controller"
+  /dashboard/developer:
+    get:
+      tags:
+      - "developers"
+      summary: "Displays the developer dashboard page"
+      description: "Displays the user dashboard page"
+      operationId: "display_developer_dashboard"
+      produces:
+      - "text/html"
+      parameters: []
+      responses:
+        200:
+          description: "Successfully loaded html page."
+          examples:
+            text/html: "<html><head><title>Apitax Developer Dashboard</title></head><body></body></html>"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "apitax.ah.api.controllers.developers_controller"
+  /dashboard/admin:
+    get:
+      tags:
+      - "admins"
+      summary: "Displays the developer admin page"
+      description: "Displays the user admin page"
+      operationId: "display_admin_dashboard"
+      produces:
+      - "text/html"
+      parameters: []
+      responses:
+        200:
+          description: "Successfully loaded html page."
+          examples:
+            text/html: "<html><head><title>Apitax Admin Dashboard</title></head><body></body></html>"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "apitax.ah.api.controllers.admins_controller"
+  /assets/{name}:
+    get:
+      tags:
+      - "any"
+      summary: "Displays the user dashboard page"
+      description: "Displays the user dashboard page"
+      operationId: "get_asset"
+      produces:
+      - "text/html"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "Get an asset such as a JavaScript file"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successfully loaded html page."
+          examples:
+            text/html: "<html><head><title>Apitax Dashboard</title></head><body></body></html>"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      x-swagger-router-controller: "apitax.ah.api.controllers.any_controller"
+  /system/endpoint/catalog:
+    get:
+      tags:
+      - "users"
+      summary: "Retrieve the endpoint catalog"
+      description: "Retrieve the endpoint catalog"
+      operationId: "endpoint_catalog"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "catalog"
+        description: "The data needed to get a catalog"
+        required: false
+        schema:
+          $ref: "#/definitions/UserAuth"
+      responses:
+        200:
+          description: "Response Returned Ok"
+          schema:
+            $ref: "#/definitions/Response"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "apitax.ah.api.controllers.users_controller"
+  /auth:
+    post:
+      tags:
+      - "any"
+      summary: "Authenticate"
+      description: "Authenticate with the API"
+      operationId: "authenticate"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "user"
+        description: "The user authentication object."
+        required: false
+        schema:
+          $ref: "#/definitions/UserAuth"
+      responses:
+        200:
+          description: "Auth Response"
+          schema:
+            $ref: "#/definitions/AuthResponse"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      x-swagger-router-controller: "apitax.ah.api.controllers.any_controller"
+  /command:
+    post:
+      tags:
+      - "users"
+      summary: "Execute a Command"
+      description: "Execute a command"
+      operationId: "command"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "execute"
+        description: "The data needed to execute this command"
+        required: false
+        schema:
+          $ref: "#/definitions/execute"
+      responses:
+        200:
+          description: "Response Returned Ok"
+          schema:
+            $ref: "#/definitions/Response"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "apitax.ah.api.controllers.users_controller"
+  /system/status:
+    get:
+      tags:
+      - "admins"
+      summary: "Retrieve the system status"
+      description: "Retrieve the system status"
+      operationId: "system_status"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "Response Returned Ok"
+          schema:
+            $ref: "#/definitions/Response"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "apitax.ah.api.controllers.admins_controller"
+  /system/driver/{name}/status:
+    get:
+      tags:
+      - "admins"
+      summary: "Retrieve the status of a loaded driver"
+      description: "Retrieve the status of a loaded driver"
+      operationId: "driver_status"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "Get status of a driver with this name"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Response Returned Ok"
+          schema:
+            $ref: "#/definitions/Response"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "apitax.ah.api.controllers.admins_controller"
+  /system/script/catalog:
+    get:
+      tags:
+      - "users"
+      summary: "Retrieve the script catalog"
+      description: "Retrieve the script catalog"
+      operationId: "script_catalog"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "Response Returned Ok"
+          schema:
+            $ref: "#/definitions/Response"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "apitax.ah.api.controllers.users_controller"
+  /system/script:
+    get:
+      tags:
+      - "users"
+      summary: "Retrieve the contents of a script"
+      description: "Retrieve the contents of a script"
+      operationId: "get_script"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "The script name."
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "Response Returned Ok"
+          schema:
+            $ref: "#/definitions/Response"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "apitax.ah.api.controllers.users_controller"
+    post:
+      tags:
+      - "developers"
+      summary: "Create a new script"
+      description: "Create a new script"
+      operationId: "create_script"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "create"
+        description: "The data needed to create this script"
+        required: false
+        schema:
+          $ref: "#/definitions/create"
+      responses:
+        200:
+          description: "Response Returned Ok"
+          schema:
+            $ref: "#/definitions/Response"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "apitax.ah.api.controllers.developers_controller"
+    put:
+      tags:
+      - "developers"
+      summary: "Save a script"
+      description: "Save a script"
+      operationId: "save_script"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "save"
+        description: "The data needed to save this script"
+        required: false
+        schema:
+          $ref: "#/definitions/save"
+      responses:
+        200:
+          description: "Response Returned Ok"
+          schema:
+            $ref: "#/definitions/Response"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "apitax.ah.api.controllers.developers_controller"
+    delete:
+      tags:
+      - "developers"
+      summary: "Delete a script"
+      description: "Delete a script"
+      operationId: "delete_script"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "delete"
+        description: "The data needed to delete this script"
+        required: false
+        schema:
+          $ref: "#/definitions/delete"
+      responses:
+        200:
+          description: "Response Returned Ok"
+          schema:
+            $ref: "#/definitions/Response"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "apitax.ah.api.controllers.developers_controller"
+    patch:
+      tags:
+      - "developers"
+      summary: "Rename a script"
+      description: "Rename a script"
+      operationId: "rename_script"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "rename"
+        description: "The data needed to save this script"
+        required: false
+        schema:
+          $ref: "#/definitions/rename"
+      responses:
+        200:
+          description: "Response Returned Ok"
+          schema:
+            $ref: "#/definitions/Response"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "apitax.ah.api.controllers.developers_controller"
+securityDefinitions:
+  Bearer:
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
+definitions:
+  UserAuth:
+    type: "object"
+    properties:
+      username:
+        type: "string"
+      password:
+        type: "string"
+      api_token:
+        type: "string"
+      extra:
+        type: "object"
+        properties: {}
+    example:
+      password: "password"
+      api_token: "api_token"
+      extra: "{}"
+      username: "username"
+  Command:
+    type: "object"
+    required:
+    - "command"
+    - "options"
+    properties:
+      parameters:
+        type: "object"
+        properties: {}
+      options:
+        type: "object"
+        properties: {}
+      command:
+        type: "string"
+  Script:
+    type: "object"
+    properties:
+      content:
+        type: "string"
+      name:
+        type: "string"
+  Response:
+    type: "object"
+    required:
+    - "body"
+    - "status"
+    properties:
+      status:
+        type: "integer"
+      message:
+        type: "string"
+      body:
+        type: "object"
+        properties: {}
+      log:
+        type: "string"
+    example:
+      log: "log"
+      message: "message"
+      body: "{}"
+      status: 0
+  ErrorResponse:
+    type: "object"
+    required:
+    - "message"
+    - "status"
+    properties:
+      status:
+        type: "integer"
+      message:
+        type: "string"
+      state:
+        type: "string"
+  AuthResponse:
+    type: "object"
+    required:
+    - "message"
+    - "status"
+    properties:
+      status:
+        type: "integer"
+      message:
+        type: "string"
+      access_token:
+        type: "string"
+      refresh_token:
+        type: "string"
+      auth:
+        $ref: "#/definitions/UserAuth"
+    example:
+      access_token: "access_token"
+      refresh_token: "refresh_token"
+      auth:
+        password: "password"
+        api_token: "api_token"
+        extra: "{}"
+        username: "username"
+      message: "message"
+      status: 0
+  execute:
+    type: "object"
+    required:
+    - "command"
+    properties:
+      command:
+        $ref: "#/definitions/Command"
+      auth:
+        $ref: "#/definitions/UserAuth"
+  save:
+    type: "object"
+    required:
+    - "script"
+    properties:
+      script:
+        $ref: "#/definitions/Script"
+  create:
+    type: "object"
+    required:
+    - "script"
+    properties:
+      script:
+        $ref: "#/definitions/Script"
+  delete:
+    type: "object"
+    required:
+    - "script"
+    properties:
+      script:
+        $ref: "#/definitions/Script"
+  rename:
+    type: "object"
+    required:
+    - "new"
+    - "original"
+    properties:
+      original:
+        $ref: "#/definitions/Script"
+      new:
+        $ref: "#/definitions/Script"
+responses:
+  Auth:
+    description: "Auth Response"
+    schema:
+      $ref: "#/definitions/AuthResponse"
+  NotFound:
+    description: "The specified resource was not found"
+    schema:
+      $ref: "#/definitions/ErrorResponse"
+  Ok:
+    description: "Response Returned Ok"
+    schema:
+      $ref: "#/definitions/Response"
+  ServerError:
+    description: "Server Error"
+    schema:
+      $ref: "#/definitions/ErrorResponse"
+  Unauthorized:
+    description: "Unauthorized"
+    schema:
+      $ref: "#/definitions/ErrorResponse"
