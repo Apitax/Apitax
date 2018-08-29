@@ -1,4 +1,5 @@
 # Apitax
+<<<<<<< HEAD
 
 Pronounced: *ahhp-ehh-tax*
 
@@ -635,3 +636,6 @@ Enter: Scriptax. Now, any of us can create little self-contained sub module file
 Okay, now our frontend only has 1 short line of commandtax which is executing a script. If the scripts are written well, there is no more callback hell, SRP is preserved, DRY is enforced, and the data returned to us will already be in a very workable format. Kaboomskies, you just saved yourself 2 dozen lines of hard to debug JavaScript, and instead, it's a one liner that returns the data already in a workable format
 
 
+=======
+Brings together Commandtax, Scriptax, Standard Library, and the API to create a powerful automation framework. Please use StarterPack to quickly incorporate additional drivers, configuration, and custom code into Apitax.
+>>>>>>> 198f38ea41e6482894748729004fc11de10b383a
