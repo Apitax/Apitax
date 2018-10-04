@@ -24,9 +24,9 @@ setup(
         'connexion == 1.1.15',
         'flask-jwt-extended',
         'flask-cors',
-        'apitaxcore',
-        'commandtax',
-        'scriptax',
-        'scriptaxstd'
+        'apitaxcore==3.0.2',
+        'scriptax==0.0.3',
+        'commandtax==0.0.5',
+        'scriptaxstd==0.0.2'
     ],
 )

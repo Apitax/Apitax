@@ -9,8 +9,8 @@
 # It includes a CLI as well as web interface
 # However the web interface will need to be customized per API usage
 
-from apitax.ah.flow.Setup import Setup
-from apitax.ah.flow.Startup import Startup
+from apitax.flow.Setup import Setup
+from apitax.flow.Startup import Startup
 
 
 class Apitax:
