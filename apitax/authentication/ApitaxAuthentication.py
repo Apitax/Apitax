@@ -1,9 +1,7 @@
-from apitax.ah.models.State import State
-# from apitax.ah.commandtax.ApiAuthentication import AuthRequest
-from apitax.ah.flow.LoadedDrivers import LoadedDrivers
-from apitax.ah.models.Credentials import Credentials
-from apitax.drivers.Driver import Driver
-from apitax.ah.flow.responses.ApitaxResponse import ApitaxResponse
+from apitaxcore.flow.LoadedDrivers import LoadedDrivers
+from apitaxcore.models.Credentials import Credentials
+from apitaxcore.drivers.Driver import Driver
+from apitaxcore.flow.responses.ApitaxResponse import ApitaxResponse
 import base64
 
 

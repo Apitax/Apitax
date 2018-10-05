@@ -1,8 +1,8 @@
-from apitax.ah.models.Credentials import Credentials
-from apitax.drivers.Driver import Driver
-from apitax.utilities.Json import read
-from apitax.ah.models.State import State
-from apitax.utilities.Files import getPath
+from apitaxcore.models.Credentials import Credentials
+from apitaxcore.drivers.Driver import Driver
+from apitaxcore.utilities.Json import read
+from apitaxcore.models.State import State
+from apitaxcore.utilities.Files import getPath
 
 
 class BasicAuth(Driver):

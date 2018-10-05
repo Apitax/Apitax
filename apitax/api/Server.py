@@ -2,10 +2,10 @@
 
 import connexion
 
-from apitax.ah.api import encoder
+from apitax.api import encoder
 from flask_jwt_extended import JWTManager
 
-from apitax.ah.models.State import State
+from apitaxcore.models.State import State
 
 from flask import redirect
 

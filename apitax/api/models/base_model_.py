@@ -2,7 +2,7 @@ import pprint
 
 import six
 
-from apitax.ah.api import util
+from apitax.api import util
 
 
 class Model(object):

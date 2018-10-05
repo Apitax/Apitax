@@ -8,19 +8,19 @@ from pathlib import Path
 import click
 
 # Application imports
-from apitax.config.Config import Config as ConfigConsumer
+from apitaxcore.config.Config import Config as ConfigConsumer
 
-from apitax.drivers.Drivers import Drivers
+from apitaxcore.drivers.Drivers import Drivers
 
-from apitax.ah.models.Options import Options
-from apitax.ah.flow.LoadedDrivers import LoadedDrivers
-from apitax.utilities.Files import getRoot
+from apitaxcore.models.Options import Options
+from apitaxcore.flow.LoadedDrivers import LoadedDrivers
+from apitaxcore.utilities.Files import getRoot
 
-from apitax.logs.Log import Log
-from apitax.logs.BufferedLog import BufferedLog
-from apitax.logs.StandardLog import StandardLog
+from apitaxcore.logs.Log import Log
+from apitaxcore.logs.BufferedLog import BufferedLog
+from apitaxcore.logs.StandardLog import StandardLog
 
-from apitax.ah.models.State import State
+from apitaxcore.models.State import State
 
 
 class Setup:

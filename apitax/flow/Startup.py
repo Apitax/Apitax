@@ -3,15 +3,13 @@ import json
 from time import time
 
 # Application imports
-from apitax.ah.flow.Connector import Connector
+from commandtax.flow.Connector import Connector
 
-from apitax.grammar.grammartest import GrammarTest
-from apitax.utilities.Numbers import round2str
-from apitax.utilities.Npm import Npm
+from apitaxcore.utilities.Numbers import round2str
 
-from apitax.ah.models.Credentials import Credentials
+from apitaxcore.models.Credentials import Credentials
 
-from apitax.ah.models.State import State
+from apitaxcore.models.State import State
 
 
 def serialize(obj):
@@ -79,9 +77,6 @@ class Startup:
             self.log.log(">> Booting Up API Server:")
             self.log.log("")
             self.server = startDevServer(self.config.get("ip"), self.config.get("port"))
-
-        elif (self.usage == 'grammar-test'):
-            GrammarTest(self.script)
 
         elif (self.usage == 'feature-test'):
             pass

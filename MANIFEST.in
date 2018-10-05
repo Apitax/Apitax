@@ -1,8 +1,4 @@
-include build.sh
-include install_python.sh
-include install_node.sh
-include test.sh
 include LICENSE
 include readme.docx
 include README.md
-include apitax/ah/api/swagger/swagger.yaml
+include apitax/api/swagger/swagger.yaml

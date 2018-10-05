@@ -2,7 +2,7 @@
 
 import connexion
 
-from apitax.ah.api import encoder
+from apitax.api import encoder
 
 
 def main():

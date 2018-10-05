@@ -1,6 +1,6 @@
 
-from apitax.ah.models.Credentials import Credentials
-from apitax.ah.api.models.user_auth import UserAuth
+from apitaxcore.models.Credentials import Credentials
+from apitax.api.models.user_auth import UserAuth
 
 
 def mapUserAuthToCredentials(userAuth: UserAuth, credentials=Credentials()):

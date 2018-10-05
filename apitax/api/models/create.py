@@ -5,9 +5,9 @@ from datetime import date, datetime  # noqa: F401
 
 from typing import List, Dict  # noqa: F401
 
-from apitax.ah.api.models.base_model_ import Model
-from apitax.ah.api.models.script import Script  # noqa: F401,E501
-from apitax.ah.api import util
+from apitax.api.models.base_model_ import Model
+from apitax.api.models.user import User  # noqa: F401,E501
+from apitax.api import util
 
 
 class Create(Model):
@@ -20,10 +20,10 @@ class Create(Model):
         """Create - a model defined in Swagger
 
         :param script: The script of this Create.  # noqa: E501
-        :type script: Script
+        :type script: User
         """
         self.swagger_types = {
-            'script': Script
+            'script': User
         }
 
         self.attribute_map = {
@@ -49,7 +49,7 @@ class Create(Model):
 
 
         :return: The script of this Create.
-        :rtype: Script
+        :rtype: User
         """
         return self._script
 
@@ -59,7 +59,7 @@ class Create(Model):
 
 
         :param script: The script of this Create.
-        :type script: Script
+        :type script: User
         """
         if script is None:
             raise ValueError("Invalid value for `script`, must not be `None`")  # noqa: E501

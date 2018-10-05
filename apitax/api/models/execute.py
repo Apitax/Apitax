@@ -5,10 +5,10 @@ from datetime import date, datetime  # noqa: F401
 
 from typing import List, Dict  # noqa: F401
 
-from apitax.ah.api.models.base_model_ import Model
-from apitax.ah.api.models.command import Command  # noqa: F401,E501
-from apitax.ah.api.models.user_auth import UserAuth  # noqa: F401,E501
-from apitax.ah.api import util
+from apitax.api.models.base_model_ import Model
+from apitax.api.models.command import Command  # noqa: F401,E501
+from apitax.api.models.user_auth import UserAuth  # noqa: F401,E501
+from apitax.api import util
 
 
 class Execute(Model):

@@ -13,7 +13,7 @@ setup(
     author='Shawn Clake',
     author_email='shawn.clake@gmail.com',
     url='https://github.com/Apitax/Apitax',
-    keywords=['restful', 'api', 'commandtax', 'scriptax'], 
+    keywords=['restful', 'api', 'commandtax', 'scriptax'],
     include_package_data=True,
     classifiers=(
         "Programming Language :: Python :: 3",
@@ -24,6 +24,9 @@ setup(
         'connexion == 1.1.15',
         'flask-jwt-extended',
         'flask-cors',
+        'python_dateutil == 2.6.0',
+        'typing == 3.5.2.2',
+        'setuptools >= 21.0.0',
         'apitaxcore==3.0.2',
         'scriptax==0.0.3',
         'commandtax==0.0.5',

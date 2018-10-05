@@ -1,7 +1,7 @@
 from connexion.apps.flask_app import FlaskJSONEncoder
 import six
 
-from apitax.ah.api.models.base_model_ import Model
+from apitax.api.models.base_model_ import Model
 
 
 class JSONEncoder(FlaskJSONEncoder):
