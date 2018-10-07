@@ -27,9 +27,10 @@ setup(
         'python_dateutil == 2.6.0',
         'typing == 3.5.2.2',
         'setuptools >= 21.0.0',
-        'apitaxcore==3.0.2',
-        'scriptax==0.0.3',
-        'commandtax==0.0.5',
-        'scriptaxstd==0.0.2'
+        'apitaxcore==3.0.5',     # Core
+        'commandtax==0.0.6',     # Commandtax Support
+        'scriptax==0.0.3',       # Scriptax Support (.ah)
+        'scriptaxstd==0.0.4',    # Scriptax STD Lib
+        'apitaxdrivers==0.0.7',  # Misc Drivers (ie. Github connectivity)
     ],
 )

@@ -10,8 +10,6 @@ import click
 # Application imports
 from apitaxcore.config.Config import Config as ConfigConsumer
 
-from apitaxcore.drivers.Drivers import Drivers
-
 from apitaxcore.models.Options import Options
 from apitaxcore.flow.LoadedDrivers import LoadedDrivers
 from apitaxcore.utilities.Files import getRoot
@@ -26,7 +24,7 @@ from apitaxcore.models.State import State
 class Setup:
     def __init__(self, passedArgs: list = []):
 
-        if (len(passedArgs) == 0):
+        if len(passedArgs) == 0:
             self.args = sys.argv[1:]
         else:
             self.args = passedArgs
@@ -48,7 +46,7 @@ class Setup:
         self.build = True
 
         self.doLog = True
-        if (State.paths['log'] != ""):
+        if State.paths['log'] != "":
             self.logPath = State.paths['log']
         else:
             self.logPath = '/logs/apitax.log'
@@ -57,7 +55,7 @@ class Setup:
         self.logHumanReadable = False
 
         # print(getRootPath('/config.txt'))
-        if (State.paths['config'] != ""):
+        if State.paths['config'] != "":
             configFile = State.paths['config']
         else:
             configFile = getRoot('/config.txt')
@@ -65,30 +63,30 @@ class Setup:
         self.config.path = str(Path(os.path.dirname(os.path.abspath(inspect.stack()[0][1]))).resolve())
         # print(getRootPath())
 
-        if (self.config.has('default-mode')):
+        if self.config.has('default-mode'):
             self.usage = self.config.get('default-mode')
 
-        if (self.config.has('log')):
+        if self.config.has('log'):
             self.doLog = self.config.get('log')
 
-        if (self.config.has('log-file')):
+        if self.config.has('log-file'):
             self.logPath = self.config.get('log-file')
 
-        if (self.config.has('log-colorize')):
+        if self.config.has('log-colorize'):
             self.logColorize = self.config.get('log-colorize')
 
-        if (self.config.has('log-human-readable')):
+        if self.config.has('log-human-readable'):
             self.logHumanReadable = self.config.get('log-human-readable')
 
-        if (self.config.has('log-prefixes')):
+        if self.config.has('log-prefixes'):
             self.logPrefixes = self.config.get('log-prefixes')
 
-        if (self.logPath[:1] != '/'):
+        if self.logPath[:1] != '/':
             self.logPath = '/' + self.logPath
 
         # self.logPath = getRootPath(self.logPath)
 
-        if (self.config.has('log-buffered') and self.config.get('log-buffered')):
+        if self.config.has('log-buffered') and self.config.get('log-buffered'):
             logDriver = BufferedLog()
         else:
             logDriver = StandardLog()
@@ -103,40 +101,40 @@ class Setup:
         self.log.log('')
         self.log.log('')
 
-        if ('--cli' in self.args):
+        if '--cli' in self.args:
             self.usage = 'cli'
-        elif ('--api' in self.args):
+        elif '--api' in self.args:
             self.usage = 'api'
-        elif ('--grammar-test' in self.args):
+        elif '--grammar-test' in self.args:
             self.usage = 'grammar-test'
-        elif ('--feature-test' in self.args):
+        elif '--feature-test' in self.args:
             self.usage = 'feature-test'
 
-        if ('--debug' in self.args):
+        if '--debug' in self.args:
             self.debug = True
 
-        if ('--sensitive' in self.args):
+        if '--sensitive' in self.args:
             self.sensitive = True
 
-        if ('--reloader' in self.args):
+        if '--reloader' in self.args:
             self.reloader = True
 
-        if ('-u' in self.args):
+        if '-u' in self.args:
             self.username = self.args[self.args.index('-u') + 1]
 
-        if ('-p' in self.args):
+        if '-p' in self.args:
             self.password = click.prompt('Enter Your Password', hide_input=True)
 
-        if ('-s' in self.args):
+        if '-s' in self.args:
             self.script = self.args[self.args.index('-s') + 1]
 
-        if ('-r' in self.args):
+        if '-r' in self.args:
             self.command = self.args[self.args.index('-r') + 1]
-        elif (self.script == '' and self.usage == 1):
+        elif self.script == '' and self.usage == 1:
             self.command = click.prompt('R')
 
         # This is to turn the '-s' flag into a command behind the scenes
-        if (self.script != ''):
+        if self.script != '':
             self.command = 'script ' + self.script
 
         self.options = Options(debug=self.debug, sensitive=self.sensitive)
@@ -163,13 +161,13 @@ class Setup:
 
         self.log.log('    * Logging: ' + str(self.loggingSettings.get('doLog')))
 
-        if (self.loggingSettings.get('doLog')):
+        if self.loggingSettings.get('doLog'):
             self.log.log('      * Colorize CLI: ' + str(self.loggingSettings.get('colorize')))
 
         self.log.log('')
         self.log.log('')
 
-        if (self.options.debug):
+        if self.options.debug:
             self.log.log('>> Setting up AppState')
             self.log.log('')
             self.log.log('')
@@ -178,39 +176,32 @@ class Setup:
         State.config = self.config
         State.options = self.options
         State.log = self.log
-        if (State.paths['log'] == ""):
+        if State.paths['log'] == "":
             State.paths['log'] = self.logPath
-        if (State.paths['root'] == ""):
+        if State.paths['root'] == "":
             State.paths['root'] = getRoot()
-        if (State.paths['apitax'] == ""):
+        if State.paths['apitax'] == "":
             State.paths['apitax'] = str(Path(os.path.dirname(os.path.abspath(inspect.stack()[0][1]))).resolve())
-        if (State.paths['config'] == ""):
+        if State.paths['config'] == "":
             State.paths['config'] = configFile
 
         if (self.options.debug):
             self.log.log('>> Loading Drivers')
             self.log.log('')
 
-        Drivers.initialize()
-        
         self.log.getLoggerDriver().outputLog()
 
     def load(self):
-        drivers:list = ["Api"] + ["Scriptax"]
-        if(self.config.has('drivers')):
-            drivers += self.config.getAsList('drivers')
+        drivers = []
+        if self.config.has('drivers-use'):
+            drivers += self.config.getAsList('drivers-use')
+
         for driver in drivers:
             LoadedDrivers.load(driver)
 
-        if (self.options.debug):
+        if self.options.debug:
             self.log.log('>> Finished Loading Drivers')
             self.log.log('')
             self.log.log('')
-
-        #if (self.username == '' and self.config.has('default-username')):
-        #    self.username = LoadedDrivers.getDefaultBaseDriver().getDefaultUsername()  # config.get('default-username')
-
-        #if (self.password == '' and self.config.has('default-password')):
-        #    self.password = LoadedDrivers.getDefaultBaseDriver().getDefaultPassword()  # config.get('default-password')
 
         self.log.getLoggerDriver().outputLog()

@@ -7,7 +7,7 @@ def isRole(identity, role='user'):
 def hasAccess(identity, role='user'):
     has = convertRoleToNumber(identity['role'])
     required = convertRoleToNumber(role)
-    if(has >= required):
+    if has >= required:
         return True
     return False
 
