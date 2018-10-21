@@ -2,12 +2,12 @@ import connexion
 import six
 
 from apitax.api.models.auth_response import AuthResponse  # noqa: E501
-from apitax.api.models.create import Create  # noqa: E501
-from apitax.api.models.delete import Delete  # noqa: E501
 from apitax.api.models.error_response import ErrorResponse  # noqa: E501
 from apitax.api.models.response import Response  # noqa: E501
-from apitax.api.models.save import Save  # noqa: E501
 from apitax.api.models.user_auth import UserAuth  # noqa: E501
+from apitax.api.models.user_create import UserCreate  # noqa: E501
+from apitax.api.models.user_delete import UserDelete  # noqa: E501
+from apitax.api.models.user_save import UserSave  # noqa: E501
 from apitax.api import util
 
 from apitax.authentication.ApitaxAuthentication import ApitaxAuthentication
@@ -50,22 +50,22 @@ def authenticate(user=None):  # noqa: E501
 
 
 @jwt_required
-def create_user(user, name, create=None):  # noqa: E501
-    """Create a new script
+def create_user(user, driver, user_create=None):  # noqa: E501
+    """Create a new user
 
-    Create a new script # noqa: E501
+    Create a new user # noqa: E501
 
-    :param user: Get user with this name
+    :param user: Create user with this name
     :type user: str
-    :param name: Get status of a driver with this name
-    :type name: str
-    :param create: The data needed to create this user
-    :type create: dict | bytes
+    :param driver: The driver to use for the request. ie. github
+    :type driver: str
+    :param user_create: The data needed to create this user
+    :type user_create: dict | bytes
 
     :rtype: Response
     """
     if connexion.request.is_json:
-        create = Create.from_dict(connexion.request.get_json())  # noqa: E501
+        user_create = UserCreate.from_dict(connexion.request.get_json())  # noqa: E501
 
     response = errorIfUnauthorized(role='admin')
     if response:
@@ -73,8 +73,8 @@ def create_user(user, name, create=None):  # noqa: E501
     else:
         response = ApitaxResponse()
 
-    driver: Driver = LoadedDrivers.getDriver(name)
-    user: User = mapUserToUser(create.script)
+    driver: Driver = LoadedDrivers.getDriver(driver)
+    user: User = mapUserToUser(user_create.script)
 
     if driver.createApitaxUser(user):
         return Response(status=200, body=response.getResponseBody())
@@ -83,22 +83,22 @@ def create_user(user, name, create=None):  # noqa: E501
 
 
 @jwt_required
-def delete_user(user, name, delete=None):  # noqa: E501
-    """Delete a script
+def delete_user(user, driver, user_delete=None):  # noqa: E501
+    """Delete a user
 
-    Delete a script # noqa: E501
+    Delete a user # noqa: E501
 
-    :param user: Get user with this name
+    :param user: Delete user with this name
     :type user: str
-    :param name: Get status of a driver with this name
-    :type name: str
-    :param delete: The data needed to delete this user
-    :type delete: dict | bytes
+    :param driver: The driver to use for the request. ie. github
+    :type driver: str
+    :param user_delete: The data needed to delete this user
+    :type user_delete: dict | bytes
 
     :rtype: Response
     """
     if connexion.request.is_json:
-        delete = Delete.from_dict(connexion.request.get_json())  # noqa: E501
+        user_delete = UserDelete.from_dict(connexion.request.get_json())  # noqa: E501
 
     response = errorIfUnauthorized(role='admin')
     if response:
@@ -106,7 +106,7 @@ def delete_user(user, name, delete=None):  # noqa: E501
     else:
         response = ApitaxResponse()
 
-    driver: Driver = LoadedDrivers.getDriver(name)
+    driver: Driver = LoadedDrivers.getDriver(driver)
 
     if driver.deleteApitaxUser(User(username=user)):
         return Response(status=200, body=response.getResponseBody())
@@ -116,13 +116,14 @@ def delete_user(user, name, delete=None):  # noqa: E501
 
 @jwt_required
 def get_config():  # noqa: E501
-    """Retrieve the config
+    """Retrieve the system config
 
-    Retrieve the config # noqa: E501
+    Retrieve the system config # noqa: E501
 
 
     :rtype: Response
     """
+    # TODO: Implement
     return 'do some magic!'
 
 
@@ -142,21 +143,22 @@ def get_log(log):  # noqa: E501
 
 
 @jwt_required
-def get_user(user, name):  # noqa: E501
+def get_user(user, driver):  # noqa: E501
     """Retrieve a user
 
     Retrieve a user # noqa: E501
 
     :param user: Get user with this name
     :type user: str
-    :param name: Get status of a driver with this name
-    :type name: str
+    :param driver: The driver to use for the request. ie. github
+    :type driver: str
 
     :rtype: Response
     """
+
     response = ApitaxResponse()
 
-    driver: Driver = LoadedDrivers.getDriver(name)
+    driver: Driver = LoadedDrivers.getDriver(driver)
     user: User = driver.getApitaxUser(User(username=user))
     response.body.add({'user': {'username': user.username, 'role': user.role}})
 
@@ -164,13 +166,13 @@ def get_user(user, name):  # noqa: E501
 
 
 @jwt_required
-def get_user_list(name):  # noqa: E501
+def get_user_list(driver):  # noqa: E501
     """Retrieve a list of users
 
     Retrieve a list of users # noqa: E501
 
-    :param name: Get status of a driver with this name
-    :type name: str
+    :param driver: The driver to use for the request. ie. github
+    :type driver: str
 
     :rtype: Response
     """
@@ -178,7 +180,7 @@ def get_user_list(name):  # noqa: E501
     return 'do some magic!'
 
 
-@jwt_required
+@jwt_refresh_token_required
 def refresh_token():  # noqa: E501
     """Refreshes login token using refresh token
 
@@ -195,22 +197,22 @@ def refresh_token():  # noqa: E501
 
 
 @jwt_required
-def save_user(user, name, save=None):  # noqa: E501
-    """Save a script
+def save_user(user, driver, user_save=None):  # noqa: E501
+    """Save a user
 
-    Save a script # noqa: E501
+    Save a user # noqa: E501
 
-    :param user: Get user with this name
+    :param user: Save user with this name
     :type user: str
-    :param name: Get status of a driver with this name
-    :type name: str
-    :param save: The data needed to save this user
-    :type save: dict | bytes
+    :param driver: The driver to use for the request. ie. github
+    :type driver: str
+    :param user_save: The data needed to save this user
+    :type user_save: dict | bytes
 
     :rtype: Response
     """
     if connexion.request.is_json:
-        save = Save.from_dict(connexion.request.get_json())  # noqa: E501
+        user_save = UserSave.from_dict(connexion.request.get_json())  # noqa: E501
 
     response = errorIfUnauthorized(role='admin')
     if response:
@@ -218,8 +220,8 @@ def save_user(user, name, save=None):  # noqa: E501
     else:
         response = ApitaxResponse()
 
-    driver: Driver = LoadedDrivers.getDriver(name)
-    user: User = mapUserToUser(save.script)
+    driver: Driver = LoadedDrivers.getDriver(driver)
+    user: User = mapUserToUser(user_save.script)
 
     if driver.saveApitaxUser(user):
         return Response(status=200, body=response.getResponseBody())

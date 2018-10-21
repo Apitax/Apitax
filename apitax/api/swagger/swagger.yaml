@@ -124,8 +124,8 @@ paths:
     get:
       tags:
       - "apitax"
-      summary: "Retrieve the config"
-      description: "Retrieve the config"
+      summary: "Retrieve the system config"
+      description: "Retrieve the system config"
       operationId: "get_config"
       produces:
       - "application/json"
@@ -185,7 +185,7 @@ paths:
       security:
       - Bearer: []
       x-swagger-router-controller: "apitax.api.controllers.apitax_controller"
-  /drivers/{name}/apitax/users:
+  /drivers/{driver}/apitax/users:
     get:
       tags:
       - "apitax"
@@ -197,9 +197,9 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "name"
+      - name: "driver"
         in: "path"
-        description: "Get status of a driver with this name"
+        description: "The driver to use for the request. ie. github"
         required: true
         type: "string"
       responses:
@@ -222,7 +222,7 @@ paths:
       security:
       - Bearer: []
       x-swagger-router-controller: "apitax.api.controllers.apitax_controller"
-  /drivers/{name}/apitax/users/{user}:
+  /drivers/{driver}/apitax/users/{user}:
     get:
       tags:
       - "apitax"
@@ -239,9 +239,9 @@ paths:
         description: "Get user with this name"
         required: true
         type: "string"
-      - name: "name"
+      - name: "driver"
         in: "path"
-        description: "Get status of a driver with this name"
+        description: "The driver to use for the request. ie. github"
         required: true
         type: "string"
       responses:
@@ -267,8 +267,8 @@ paths:
     post:
       tags:
       - "apitax"
-      summary: "Create a new script"
-      description: "Create a new script"
+      summary: "Create a new user"
+      description: "Create a new user"
       operationId: "create_user"
       consumes:
       - "application/json"
@@ -276,19 +276,19 @@ paths:
       - "application/json"
       parameters:
       - in: "body"
-        name: "create"
+        name: "user_create"
         description: "The data needed to create this user"
         required: false
         schema:
-          $ref: "#/definitions/create"
+          $ref: "#/definitions/user_create"
       - name: "user"
         in: "path"
-        description: "Get user with this name"
+        description: "Create user with this name"
         required: true
         type: "string"
-      - name: "name"
+      - name: "driver"
         in: "path"
-        description: "Get status of a driver with this name"
+        description: "The driver to use for the request. ie. github"
         required: true
         type: "string"
       responses:
@@ -314,8 +314,8 @@ paths:
     put:
       tags:
       - "apitax"
-      summary: "Save a script"
-      description: "Save a script"
+      summary: "Save a user"
+      description: "Save a user"
       operationId: "save_user"
       consumes:
       - "application/json"
@@ -323,19 +323,19 @@ paths:
       - "application/json"
       parameters:
       - in: "body"
-        name: "save"
+        name: "user_save"
         description: "The data needed to save this user"
         required: false
         schema:
-          $ref: "#/definitions/save"
+          $ref: "#/definitions/user_save"
       - name: "user"
         in: "path"
-        description: "Get user with this name"
+        description: "Save user with this name"
         required: true
         type: "string"
-      - name: "name"
+      - name: "driver"
         in: "path"
-        description: "Get status of a driver with this name"
+        description: "The driver to use for the request. ie. github"
         required: true
         type: "string"
       responses:
@@ -361,8 +361,8 @@ paths:
     delete:
       tags:
       - "apitax"
-      summary: "Delete a script"
-      description: "Delete a script"
+      summary: "Delete a user"
+      description: "Delete a user"
       operationId: "delete_user"
       consumes:
       - "application/json"
@@ -370,19 +370,19 @@ paths:
       - "application/json"
       parameters:
       - in: "body"
-        name: "delete"
+        name: "user_delete"
         description: "The data needed to delete this user"
         required: false
         schema:
-          $ref: "#/definitions/delete"
+          $ref: "#/definitions/user_delete"
       - name: "user"
         in: "path"
-        description: "Get user with this name"
+        description: "Delete user with this name"
         required: true
         type: "string"
-      - name: "name"
+      - name: "driver"
         in: "path"
-        description: "Get status of a driver with this name"
+        description: "The driver to use for the request. ie. github"
         required: true
         type: "string"
       responses:
@@ -405,7 +405,252 @@ paths:
       security:
       - Bearer: []
       x-swagger-router-controller: "apitax.api.controllers.apitax_controller"
-  /drivers/{name}/commandtax/command:
+  /drivers/{driver}/scriptax/catalog:
+    get:
+      tags:
+      - "scriptax"
+      summary: "Retrieve the script catalog"
+      description: "Retrieve the script catalog"
+      operationId: "get_driver_script_catalog"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "driver"
+        in: "path"
+        description: "The driver to use for the request. ie. github"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Response Returned Ok"
+          schema:
+            $ref: "#/definitions/Response"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "apitax.api.controllers.scriptax_controller"
+  /drivers/{driver}/scriptax/scripts:
+    get:
+      tags:
+      - "scriptax"
+      summary: "Retrieve the contents of a script"
+      description: "Retrieve the contents of a script"
+      operationId: "get_driver_script"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "script"
+        in: "query"
+        description: "The script name."
+        required: false
+        type: "string"
+      - name: "driver"
+        in: "path"
+        description: "The driver to use for the request. ie. github"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Response Returned Ok"
+          schema:
+            $ref: "#/definitions/Response"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "apitax.api.controllers.scriptax_controller"
+    post:
+      tags:
+      - "scriptax"
+      summary: "Create a new script"
+      description: "Create a new script"
+      operationId: "create_driver_script"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "script_create"
+        description: "The data needed to create this script"
+        required: false
+        schema:
+          $ref: "#/definitions/script_create"
+      - name: "driver"
+        in: "path"
+        description: "The driver to use for the request. ie. github"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Response Returned Ok"
+          schema:
+            $ref: "#/definitions/Response"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "apitax.api.controllers.scriptax_controller"
+    put:
+      tags:
+      - "scriptax"
+      summary: "Save a script"
+      description: "Save a script"
+      operationId: "save_driver_script"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "script_save"
+        description: "The data needed to save this script"
+        required: false
+        schema:
+          $ref: "#/definitions/script_save"
+      - name: "driver"
+        in: "path"
+        description: "The driver to use for the request. ie. github"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Response Returned Ok"
+          schema:
+            $ref: "#/definitions/Response"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "apitax.api.controllers.scriptax_controller"
+    delete:
+      tags:
+      - "scriptax"
+      summary: "Delete a script"
+      description: "Delete a script"
+      operationId: "delete_driver_script"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "script_delete"
+        description: "The data needed to delete this script"
+        required: false
+        schema:
+          $ref: "#/definitions/script_delete"
+      - name: "driver"
+        in: "path"
+        description: "The driver to use for the request. ie. github"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Response Returned Ok"
+          schema:
+            $ref: "#/definitions/Response"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "apitax.api.controllers.scriptax_controller"
+    patch:
+      tags:
+      - "scriptax"
+      summary: "Rename a script"
+      description: "Rename a script"
+      operationId: "rename_driver_script"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "script_rename"
+        description: "The data needed to rename this script"
+        required: false
+        schema:
+          $ref: "#/definitions/script_rename"
+      - name: "driver"
+        in: "path"
+        description: "The driver to use for the request. ie. github"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Response Returned Ok"
+          schema:
+            $ref: "#/definitions/Response"
+        401:
+          description: "Unauthorized"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        404:
+          description: "The specified resource was not found"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        500:
+          description: "Server Error"
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      security:
+      - Bearer: []
+      x-swagger-router-controller: "apitax.api.controllers.scriptax_controller"
+  /drivers/{driver}/commandtax/command:
     post:
       tags:
       - "commandtax"
@@ -423,9 +668,9 @@ paths:
         required: false
         schema:
           $ref: "#/definitions/execute"
-      - name: "name"
+      - name: "driver"
         in: "path"
-        description: "Get status of a driver with this name"
+        description: "The driver to use for the request. ie. github"
         required: true
         type: "string"
       responses:
@@ -448,19 +693,19 @@ paths:
       security:
       - Bearer: []
       x-swagger-router-controller: "apitax.api.controllers.commandtax_controller"
-  /drivers/{name}/api/status:
+  /drivers/{driver}/api/status:
     get:
       tags:
       - "api"
-      summary: "Retrieve the status of an api"
-      description: "Retrieve the status of an api"
+      summary: "Retrieve the status of an api backing a driver"
+      description: "Retrieve the status of an api backing a driver"
       operationId: "get_driver_api_status"
       produces:
       - "application/json"
       parameters:
-      - name: "name"
+      - name: "driver"
         in: "path"
-        description: "Get status of a driver with this name"
+        description: "The driver to use for the request. ie. github"
         required: true
         type: "string"
       responses:
@@ -483,7 +728,7 @@ paths:
       security:
       - Bearer: []
       x-swagger-router-controller: "apitax.api.controllers.api_controller"
-  /drivers/{name}/api/catalog:
+  /drivers/{driver}/api/catalog:
     get:
       tags:
       - "api"
@@ -495,9 +740,9 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "name"
+      - name: "driver"
         in: "path"
-        description: "Get status of a driver with this name"
+        description: "The driver to use for the request. ie. github"
         required: true
         type: "string"
       responses:
@@ -550,7 +795,7 @@ paths:
       security:
       - Bearer: []
       x-swagger-router-controller: "apitax.api.controllers.drivers_controller"
-  /drivers/{name}/status:
+  /drivers/{driver}/status:
     get:
       tags:
       - "drivers"
@@ -560,9 +805,9 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "name"
+      - name: "driver"
         in: "path"
-        description: "Get status of a driver with this name"
+        description: "The driver to use for the request. ie. github"
         required: true
         type: "string"
       responses:
@@ -585,7 +830,7 @@ paths:
       security:
       - Bearer: []
       x-swagger-router-controller: "apitax.api.controllers.drivers_controller"
-  /drivers/{name}/config:
+  /drivers/{driver}/config:
     get:
       tags:
       - "drivers"
@@ -595,9 +840,9 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "name"
+      - name: "driver"
         in: "path"
-        description: "Get status of a driver with this name"
+        description: "The driver to use for the request. ie. github"
         required: true
         type: "string"
       responses:
@@ -620,7 +865,7 @@ paths:
       security:
       - Bearer: []
       x-swagger-router-controller: "apitax.api.controllers.drivers_controller"
-  /drivers/{name}/blacklist:
+  /drivers/{driver}/blacklist:
     get:
       tags:
       - "drivers"
@@ -630,9 +875,9 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "name"
+      - name: "driver"
         in: "path"
-        description: "Get status of a driver with this name"
+        description: "The driver to use for the request. ie. github"
         required: true
         type: "string"
       responses:
@@ -655,7 +900,7 @@ paths:
       security:
       - Bearer: []
       x-swagger-router-controller: "apitax.api.controllers.drivers_controller"
-  /drivers/{name}/whitelist:
+  /drivers/{driver}/whitelist:
     get:
       tags:
       - "drivers"
@@ -665,9 +910,9 @@ paths:
       produces:
       - "application/json"
       parameters:
-      - name: "name"
+      - name: "driver"
         in: "path"
-        description: "Get status of a driver with this name"
+        description: "The driver to use for the request. ie. github"
         required: true
         type: "string"
       responses:
@@ -690,251 +935,6 @@ paths:
       security:
       - Bearer: []
       x-swagger-router-controller: "apitax.api.controllers.drivers_controller"
-  /drivers/{name}/scriptax/catalog:
-    get:
-      tags:
-      - "scriptax"
-      summary: "Retrieve the script catalog"
-      description: "Retrieve the script catalog"
-      operationId: "get_driver_script_catalog"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "name"
-        in: "path"
-        description: "Get status of a driver with this name"
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: "Response Returned Ok"
-          schema:
-            $ref: "#/definitions/Response"
-        401:
-          description: "Unauthorized"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-        404:
-          description: "The specified resource was not found"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-        500:
-          description: "Server Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-      security:
-      - Bearer: []
-      x-swagger-router-controller: "apitax.api.controllers.scriptax_controller"
-  /drivers/{name}/scriptax/scripts:
-    get:
-      tags:
-      - "scriptax"
-      summary: "Retrieve the contents of a script"
-      description: "Retrieve the contents of a script"
-      operationId: "get_driver_script"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "name"
-        in: "query"
-        description: "The script name."
-        required: false
-        type: "string"
-      - name: "name"
-        in: "path"
-        description: "Get status of a driver with this name"
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: "Response Returned Ok"
-          schema:
-            $ref: "#/definitions/Response"
-        401:
-          description: "Unauthorized"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-        404:
-          description: "The specified resource was not found"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-        500:
-          description: "Server Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-      security:
-      - Bearer: []
-      x-swagger-router-controller: "apitax.api.controllers.scriptax_controller"
-    post:
-      tags:
-      - "scriptax"
-      summary: "Create a new script"
-      description: "Create a new script"
-      operationId: "create_driver_script"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "create"
-        description: "The data needed to create this script"
-        required: false
-        schema:
-          $ref: "#/definitions/create_1"
-      - name: "name"
-        in: "path"
-        description: "Get status of a driver with this name"
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: "Response Returned Ok"
-          schema:
-            $ref: "#/definitions/Response"
-        401:
-          description: "Unauthorized"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-        404:
-          description: "The specified resource was not found"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-        500:
-          description: "Server Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-      security:
-      - Bearer: []
-      x-swagger-router-controller: "apitax.api.controllers.scriptax_controller"
-    put:
-      tags:
-      - "scriptax"
-      summary: "Save a script"
-      description: "Save a script"
-      operationId: "save_driver_script"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "save"
-        description: "The data needed to save this script"
-        required: false
-        schema:
-          $ref: "#/definitions/save_1"
-      - name: "name"
-        in: "path"
-        description: "Get status of a driver with this name"
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: "Response Returned Ok"
-          schema:
-            $ref: "#/definitions/Response"
-        401:
-          description: "Unauthorized"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-        404:
-          description: "The specified resource was not found"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-        500:
-          description: "Server Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-      security:
-      - Bearer: []
-      x-swagger-router-controller: "apitax.api.controllers.scriptax_controller"
-    delete:
-      tags:
-      - "scriptax"
-      summary: "Delete a script"
-      description: "Delete a script"
-      operationId: "delete_driver_script"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "delete"
-        description: "The data needed to delete this script"
-        required: false
-        schema:
-          $ref: "#/definitions/delete_1"
-      - name: "name"
-        in: "path"
-        description: "Get status of a driver with this name"
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: "Response Returned Ok"
-          schema:
-            $ref: "#/definitions/Response"
-        401:
-          description: "Unauthorized"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-        404:
-          description: "The specified resource was not found"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-        500:
-          description: "Server Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-      security:
-      - Bearer: []
-      x-swagger-router-controller: "apitax.api.controllers.scriptax_controller"
-    patch:
-      tags:
-      - "scriptax"
-      summary: "Rename a script"
-      description: "Rename a script"
-      operationId: "rename_driver_script"
-      consumes:
-      - "application/json"
-      produces:
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "rename"
-        description: "The data needed to save this script"
-        required: false
-        schema:
-          $ref: "#/definitions/rename"
-      - name: "name"
-        in: "path"
-        description: "Get status of a driver with this name"
-        required: true
-        type: "string"
-      responses:
-        200:
-          description: "Response Returned Ok"
-          schema:
-            $ref: "#/definitions/Response"
-        401:
-          description: "Unauthorized"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-        404:
-          description: "The specified resource was not found"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-        500:
-          description: "Server Error"
-          schema:
-            $ref: "#/definitions/ErrorResponse"
-      security:
-      - Bearer: []
-      x-swagger-router-controller: "apitax.api.controllers.scriptax_controller"
 securityDefinitions:
   Bearer:
     type: "apiKey"
@@ -1046,58 +1046,49 @@ definitions:
         username: "username"
       message: "message"
       status: 0
-  save:
+  user_save:
     type: "object"
     required:
     - "script"
     properties:
       script:
         $ref: "#/definitions/User"
-  create:
+  user_create:
     type: "object"
     required:
     - "script"
     properties:
       script:
         $ref: "#/definitions/User"
-  delete:
+  user_delete:
     type: "object"
     required:
     - "script"
     properties:
       script:
         $ref: "#/definitions/User"
-  execute:
-    type: "object"
-    required:
-    - "command"
-    properties:
-      command:
-        $ref: "#/definitions/Command"
-      auth:
-        $ref: "#/definitions/UserAuth"
-  save_1:
+  script_save:
     type: "object"
     required:
     - "script"
     properties:
       script:
         $ref: "#/definitions/Script"
-  create_1:
+  script_create:
     type: "object"
     required:
     - "script"
     properties:
       script:
         $ref: "#/definitions/Script"
-  delete_1:
+  script_delete:
     type: "object"
     required:
     - "script"
     properties:
       script:
         $ref: "#/definitions/Script"
-  rename:
+  script_rename:
     type: "object"
     required:
     - "new"
@@ -1107,6 +1098,15 @@ definitions:
         $ref: "#/definitions/Script"
       new:
         $ref: "#/definitions/Script"
+  execute:
+    type: "object"
+    required:
+    - "command"
+    properties:
+      command:
+        $ref: "#/definitions/Command"
+      auth:
+        $ref: "#/definitions/UserAuth"
 responses:
   NotFound:
     description: "The specified resource was not found"

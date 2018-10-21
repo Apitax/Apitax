@@ -6,12 +6,12 @@ from flask import json
 from six import BytesIO
 
 from apitax.api.models.auth_response import AuthResponse  # noqa: E501
-from apitax.api.models.create import Create  # noqa: E501
-from apitax.api.models.delete import Delete  # noqa: E501
 from apitax.api.models.error_response import ErrorResponse  # noqa: E501
 from apitax.api.models.response import Response  # noqa: E501
-from apitax.api.models.save import Save  # noqa: E501
 from apitax.api.models.user_auth import UserAuth  # noqa: E501
+from apitax.api.models.user_create import UserCreate  # noqa: E501
+from apitax.api.models.user_delete import UserDelete  # noqa: E501
+from apitax.api.models.user_save import UserSave  # noqa: E501
 from apitax.api.test import BaseTestCase
 
 
@@ -35,13 +35,13 @@ class TestApitaxController(BaseTestCase):
     def test_create_user(self):
         """Test case for create_user
 
-        Create a new script
+        Create a new user
         """
-        create = Create()
+        user_create = UserCreate()
         response = self.client.open(
-            '/apitax/2/drivers/{name}/apitax/users/{user}'.format(user='user_example', name='name_example'),
+            '/apitax/2/drivers/{driver}/apitax/users/{user}'.format(user='user_example', driver='driver_example'),
             method='POST',
-            data=json.dumps(create),
+            data=json.dumps(user_create),
             content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -49,13 +49,13 @@ class TestApitaxController(BaseTestCase):
     def test_delete_user(self):
         """Test case for delete_user
 
-        Delete a script
+        Delete a user
         """
-        delete = Delete()
+        user_delete = UserDelete()
         response = self.client.open(
-            '/apitax/2/drivers/{name}/apitax/users/{user}'.format(user='user_example', name='name_example'),
+            '/apitax/2/drivers/{driver}/apitax/users/{user}'.format(user='user_example', driver='driver_example'),
             method='DELETE',
-            data=json.dumps(delete),
+            data=json.dumps(user_delete),
             content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -63,7 +63,7 @@ class TestApitaxController(BaseTestCase):
     def test_get_config(self):
         """Test case for get_config
 
-        Retrieve the config
+        Retrieve the system config
         """
         response = self.client.open(
             '/apitax/2/apitax/config',
@@ -88,7 +88,7 @@ class TestApitaxController(BaseTestCase):
         Retrieve a user
         """
         response = self.client.open(
-            '/apitax/2/drivers/{name}/apitax/users/{user}'.format(user='user_example', name='name_example'),
+            '/apitax/2/drivers/{driver}/apitax/users/{user}'.format(user='user_example', driver='driver_example'),
             method='GET',
             content_type='application/json')
         self.assert200(response,
@@ -100,7 +100,7 @@ class TestApitaxController(BaseTestCase):
         Retrieve a list of users
         """
         response = self.client.open(
-            '/apitax/2/drivers/{name}/apitax/users'.format(name='name_example'),
+            '/apitax/2/drivers/{driver}/apitax/users'.format(driver='driver_example'),
             method='GET',
             content_type='application/json')
         self.assert200(response,
@@ -120,13 +120,13 @@ class TestApitaxController(BaseTestCase):
     def test_save_user(self):
         """Test case for save_user
 
-        Save a script
+        Save a user
         """
-        save = Save()
+        user_save = UserSave()
         response = self.client.open(
-            '/apitax/2/drivers/{name}/apitax/users/{user}'.format(user='user_example', name='name_example'),
+            '/apitax/2/drivers/{driver}/apitax/users/{user}'.format(user='user_example', driver='driver_example'),
             method='PUT',
-            data=json.dumps(save),
+            data=json.dumps(user_save),
             content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))

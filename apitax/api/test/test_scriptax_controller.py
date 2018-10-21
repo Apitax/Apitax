@@ -5,12 +5,12 @@ from __future__ import absolute_import
 from flask import json
 from six import BytesIO
 
-from apitax.api.models.create1 import Create1  # noqa: E501
-from apitax.api.models.delete1 import Delete1  # noqa: E501
 from apitax.api.models.error_response import ErrorResponse  # noqa: E501
-from apitax.api.models.rename import Rename  # noqa: E501
 from apitax.api.models.response import Response  # noqa: E501
-from apitax.api.models.save1 import Save1  # noqa: E501
+from apitax.api.models.script_create import ScriptCreate  # noqa: E501
+from apitax.api.models.script_delete import ScriptDelete  # noqa: E501
+from apitax.api.models.script_rename import ScriptRename  # noqa: E501
+from apitax.api.models.script_save import ScriptSave  # noqa: E501
 from apitax.api.test import BaseTestCase
 
 
@@ -22,11 +22,11 @@ class TestScriptaxController(BaseTestCase):
 
         Create a new script
         """
-        create = Create1()
+        script_create = ScriptCreate()
         response = self.client.open(
-            '/apitax/2/drivers/{name}/scriptax/scripts'.format(name='name_example'),
+            '/apitax/2/drivers/{driver}/scriptax/scripts'.format(driver='driver_example'),
             method='POST',
-            data=json.dumps(create),
+            data=json.dumps(script_create),
             content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -36,11 +36,11 @@ class TestScriptaxController(BaseTestCase):
 
         Delete a script
         """
-        delete = Delete1()
+        script_delete = ScriptDelete()
         response = self.client.open(
-            '/apitax/2/drivers/{name}/scriptax/scripts'.format(name='name_example'),
+            '/apitax/2/drivers/{driver}/scriptax/scripts'.format(driver='driver_example'),
             method='DELETE',
-            data=json.dumps(delete),
+            data=json.dumps(script_delete),
             content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -50,9 +50,9 @@ class TestScriptaxController(BaseTestCase):
 
         Retrieve the contents of a script
         """
-        query_string = [('name', 'name_example')]
+        query_string = [('script', 'script_example')]
         response = self.client.open(
-            '/apitax/2/drivers/{name}/scriptax/scripts'.format(name2='name_example'),
+            '/apitax/2/drivers/{driver}/scriptax/scripts'.format(driver='driver_example'),
             method='GET',
             content_type='application/json',
             query_string=query_string)
@@ -65,7 +65,7 @@ class TestScriptaxController(BaseTestCase):
         Retrieve the script catalog
         """
         response = self.client.open(
-            '/apitax/2/drivers/{name}/scriptax/catalog'.format(name='name_example'),
+            '/apitax/2/drivers/{driver}/scriptax/catalog'.format(driver='driver_example'),
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -75,11 +75,11 @@ class TestScriptaxController(BaseTestCase):
 
         Rename a script
         """
-        rename = Rename()
+        script_rename = ScriptRename()
         response = self.client.open(
-            '/apitax/2/drivers/{name}/scriptax/scripts'.format(name='name_example'),
+            '/apitax/2/drivers/{driver}/scriptax/scripts'.format(driver='driver_example'),
             method='PATCH',
-            data=json.dumps(rename),
+            data=json.dumps(script_rename),
             content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -89,11 +89,11 @@ class TestScriptaxController(BaseTestCase):
 
         Save a script
         """
-        save = Save1()
+        script_save = ScriptSave()
         response = self.client.open(
-            '/apitax/2/drivers/{name}/scriptax/scripts'.format(name='name_example'),
+            '/apitax/2/drivers/{driver}/scriptax/scripts'.format(driver='driver_example'),
             method='PUT',
-            data=json.dumps(save),
+            data=json.dumps(script_save),
             content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))

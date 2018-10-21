@@ -21,7 +21,7 @@ class TestCommandtaxController(BaseTestCase):
         """
         execute = Execute()
         response = self.client.open(
-            '/apitax/2/drivers/{name}/commandtax/command'.format(name='name_example'),
+            '/apitax/2/drivers/{driver}/commandtax/command'.format(driver='driver_example'),
             method='POST',
             data=json.dumps(execute),
             content_type='application/json')

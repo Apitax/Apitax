@@ -19,7 +19,7 @@ class TestDriversController(BaseTestCase):
         Retrieve the blacklist in the driver
         """
         response = self.client.open(
-            '/apitax/2/drivers/{name}/blacklist'.format(name='name_example'),
+            '/apitax/2/drivers/{driver}/blacklist'.format(driver='driver_example'),
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -30,7 +30,7 @@ class TestDriversController(BaseTestCase):
         Retrieve the config of a loaded driver
         """
         response = self.client.open(
-            '/apitax/2/drivers/{name}/config'.format(name='name_example'),
+            '/apitax/2/drivers/{driver}/config'.format(driver='driver_example'),
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -52,7 +52,7 @@ class TestDriversController(BaseTestCase):
         Retrieve the status of a loaded driver
         """
         response = self.client.open(
-            '/apitax/2/drivers/{name}/status'.format(name='name_example'),
+            '/apitax/2/drivers/{driver}/status'.format(driver='driver_example'),
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -63,7 +63,7 @@ class TestDriversController(BaseTestCase):
         Retrieve the whitelist in the driver
         """
         response = self.client.open(
-            '/apitax/2/drivers/{name}/whitelist'.format(name='name_example'),
+            '/apitax/2/drivers/{driver}/whitelist'.format(driver='driver_example'),
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))

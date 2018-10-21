@@ -7,7 +7,6 @@ from apitax.api.models.response import Response  # noqa: E501
 from apitax.api import util
 
 from apitaxcore.models.State import State
-from apitaxcore.flow.LoadedDrivers import LoadedDrivers
 from apitaxcore.models.Credentials import Credentials
 from apitaxcore.models.Options import Options
 from commandtax.flow.Connector import Connector
@@ -15,8 +14,6 @@ from apitax.api.utilities.Mappers import mapUserAuthToCredentials
 
 import traceback
 
-from apitaxcore.flow.LoadedDrivers import LoadedDrivers
-from apitaxcore.drivers.Driver import Driver
 from apitaxcore.flow.responses.ApitaxResponse import ApitaxResponse
 from apitax.api.utilities.Lifecycle import redirectIfUnauthorized, errorIfUnauthorized
 from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required,
@@ -24,13 +21,13 @@ from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_r
 
 
 @jwt_required
-def command(name, execute=None):  # noqa: E501
+def command(driver, execute=None):  # noqa: E501
     """Execute a Command
 
     Execute a command # noqa: E501
 
-    :param name: Get status of a driver with this name
-    :type name: str
+    :param driver: The driver to use for the request. ie. github
+    :type driver: str
     :param execute: The data needed to execute this command
     :type execute: dict | bytes
 
@@ -38,6 +35,8 @@ def command(name, execute=None):  # noqa: E501
     """
     if connexion.request.is_json:
         execute = Execute.from_dict(connexion.request.get_json())  # noqa: E501
+
+    # TODO: Utilize the driver passed rather than the first string component
 
     response = errorIfUnauthorized(role='admin')
     if response:

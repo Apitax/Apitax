@@ -12,14 +12,15 @@ from apitax.api.utilities.Lifecycle import redirectIfUnauthorized, errorIfUnauth
 from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_required, jwt_refresh_token_required,
                                 get_jwt_identity, get_raw_jwt, get_jwt_claims)
 
+
 @jwt_required
-def get_driver_api_catalog(name):  # noqa: E501
+def get_driver_api_catalog(driver):  # noqa: E501
     """Retrieve the api catalog
 
     Retrieve the api catalog # noqa: E501
 
-    :param name: Get status of a driver with this name
-    :type name: str
+    :param driver: The driver to use for the request. ie. github
+    :type driver: str
 
     :rtype: Response
     """
@@ -29,20 +30,20 @@ def get_driver_api_catalog(name):  # noqa: E501
     else:
         response = ApitaxResponse()
 
-    driver: Driver = LoadedDrivers.getDriver(name)
+    driver: Driver = LoadedDrivers.getDriver(driver)
     response.body.add(driver.getApiEndpointCatalog())
 
     return Response(status=200, body=response.getResponseBody())
 
 
 @jwt_required
-def get_driver_api_status(name):  # noqa: E501
-    """Retrieve the status of an api
+def get_driver_api_status(driver):  # noqa: E501
+    """Retrieve the status of an api backing a driver
 
-    Retrieve the status of an api # noqa: E501
+    Retrieve the status of an api backing a driver # noqa: E501
 
-    :param name: Get status of a driver with this name
-    :type name: str
+    :param driver: The driver to use for the request. ie. github
+    :type driver: str
 
     :rtype: Response
     """
@@ -52,7 +53,7 @@ def get_driver_api_status(name):  # noqa: E501
     else:
         response = ApitaxResponse()
 
-    driver: Driver = LoadedDrivers.getDriver(name)
+    driver: Driver = LoadedDrivers.getDriver(driver)
     response.body.add({"format": driver.getApiFormat()})
     response.body.add({"description": driver.getApiDescription()})
     response.body.add({"status": driver.getApiStatus()})
