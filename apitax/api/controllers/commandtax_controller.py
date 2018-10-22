@@ -64,7 +64,7 @@ def command(driver, execute=None):  # noqa: E501
             if not execute.auth.api_token:
                 options.sensitive = True
 
-        connector = Connector(options=options, credentials=credentials, command=execute.command.command,
+        connector = Connector(options=options, credentials=credentials, command=driver + " " + execute.command.command,
                               parameters=parameters)
 
         response: ApitaxResponse = connector.execute()
@@ -76,10 +76,12 @@ def command(driver, execute=None):  # noqa: E501
 
         return response
     except:
+        #traceback.print_exc()
         State.log.error(traceback.format_exc())
+        State.log.getLoggerDriver().outputLog()
         if 'debug' in execute.command.options and execute.command.options['debug']:
             return ErrorResponse(status=500,
                                  message="Uncaught exception occured during processing. To get a larger stack trace, visit the logs.",
-                                 state=traceback.format_exc(3))
+                                 state=traceback.format_exc())
         else:
             return ErrorResponse(status=500, message="")

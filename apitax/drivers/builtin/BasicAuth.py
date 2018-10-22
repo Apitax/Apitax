@@ -8,7 +8,7 @@ from apitaxcore.utilities.Files import getPath
 class BasicAuth(Driver):
     def __init__(self):
         super().__init__()
-        self.users = read(getPath(State.paths['root'] + "/users.json"))
+        self.users = read(getPath(State.paths['root'] + "/app/users.json"))
 
     def getDriverName(self) -> str:
         return "Basic Auth"

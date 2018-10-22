@@ -33,3 +33,48 @@ default-password = <password>
 personal-access-token = Personal token created from here: https://github.com/settings/tokens
 repo = Repo name in the form: ShawnClake/Apitax
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[Apitax]
+port = 5085
+ip = 0.0.0.0
+secret = CHANGE_THIS_TO_A_SECRET_STRING
+allow-cors = true
+drivers-use = github
+drivers-default-apitax-auth = basic-auth
+drivers-default-scriptax =
+drivers-default-api =
+log = true
+log-file = logs/apitax.log
+log-colorize = true
+log-human-readable = false
+log-prefixes = true
+log-buffered = true
+
+[OpenstackDriver]
+base-endpoint = http://0.0.0.0:0000
+auth-endpoint = /v3/auth/tokens
+catalog-endpoint = /v3/auth/catalog
+default-username = <username>
+default-password = <password>
+
+[GithubDriver]
+personal-access-token = sometoken
+repo = Apitax/Scripts
+
