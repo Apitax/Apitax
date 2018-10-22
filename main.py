@@ -67,8 +67,10 @@ project.loadDrivers()
 # Finishes loading app by loading custom drivers as specified in the config
 setup.load()
 
+# This loads the app for use in both the uWSGI and Nginx mode as well as dev server mode
+from apitax.api.Server import *
+
 # If debug environment, runs flask dev server without Nginx or uWSGI
 # Otherwise, tell uWSGI that main.py is the entry point
 if project.isDev():
-    from apitax.api.Server import *
     app.run(port=5085, host='0.0.0.0')

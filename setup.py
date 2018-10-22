@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 setup(
     name='Apitax',
     packages=find_packages(),  # this must be the same as the name above
-    version='3.0.3',
+    version='3.0.4',
     description='Brings together Commandtax, Scriptax, Standard Library, and the API to create a powerful automation framework. Please use StarterPack to quickly incorporate additional drivers, configuration, and custom code into Apitax.',
     long_description=long_description,
     long_description_content_type="text/markdown",
