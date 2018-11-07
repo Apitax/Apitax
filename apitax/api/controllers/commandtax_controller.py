@@ -38,7 +38,7 @@ def command(driver, execute=None):  # noqa: E501
 
     # TODO: Utilize the driver passed rather than the first string component
 
-    response = errorIfUnauthorized(role='admin')
+    response = errorIfUnauthorized(role='user')
     if response:
         return response
 
@@ -76,7 +76,6 @@ def command(driver, execute=None):  # noqa: E501
 
         return response
     except:
-        #traceback.print_exc()
         State.log.error(traceback.format_exc())
         State.log.getLoggerDriver().outputLog()
         if 'debug' in execute.command.options and execute.command.options['debug']:
