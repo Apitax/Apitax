@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 setup(
     name='Apitax',
     packages=find_packages(),  # this must be the same as the name above
-    version='3.0.9',
+    version='3.0.10',
     description='Brings together Commandtax, Scriptax, Standard Library, and the API to create a powerful automation framework. Please use StarterPack to quickly incorporate additional drivers, configuration, and custom code into Apitax.',
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -27,10 +27,10 @@ setup(
         'python_dateutil == 2.6.0',
         'typing == 3.5.2.2',
         'setuptools >= 21.0.0',
-        'apitaxcore==3.0.8',     # Core
-        'commandtax==0.0.8',     # Commandtax Support
-        'scriptax==0.0.5',       # Scriptax Support (.ah)
-        'scriptaxstd==0.0.9',    # Scriptax STD Lib
+        'apitaxcore==3.0.8',      # Core
+        'commandtax==0.0.8',      # Commandtax Support
+        'scriptax==0.0.5',        # Scriptax Support (.ah)
+        'scriptaxstd==0.0.10',    # Scriptax STD Lib
         'apitaxdrivers==0.0.12',  # Misc Drivers (ie. Github connectivity)
     ],
 )
