@@ -125,7 +125,7 @@ Commandtax is an efficient and fluent command language for Rest API's. Think of 
 #### Coming Soon
 * shell \<someCommand\>
     * Runs the command in the shell and returns the response from the shell		
-* An optional abreviated syntax for each command flag. These examples are subject to change
+* An optional abbreviated syntax for each command flag. These examples are subject to change
     * --get -> -g
     * --post -> -p
     * --put -> -q
